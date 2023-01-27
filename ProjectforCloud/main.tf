@@ -87,3 +87,18 @@ module "ec2" {
 
   tags = local.tags
 }
+
+module "ec2" {
+  source = "./modules/EC2"
+
+  name = "testmachine"
+
+  ami                         = data.aws_ami.amazon_linux.id
+  instance_type               = "c5.large"
+  availability_zone           = local.availability_zone
+  subnet_id                   = element(module.vpc1.private_subnets, 0)
+  vpc_security_group_ids      = [module.security_group.security_group_id]
+  associate_public_ip_address = true
+
+  tags = local.tags
+}
